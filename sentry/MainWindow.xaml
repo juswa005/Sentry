@@ -1,0 +1,221 @@
+﻿<Window x:Class="sentry.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Attendance Tracker" Height="1080" Width="1920"
+        Background="#F0F0F0" 
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None">
+
+    <Window.Resources>
+        <!-- Colors -->
+        <SolidColorBrush x:Key="NavyBlue" Color="#2E3A59"/>
+        <SolidColorBrush x:Key="LightBlue" Color="#C5D1F0"/>
+        <SolidColorBrush x:Key="LighterBlue" Color="#E8EDF9"/>
+        <SolidColorBrush x:Key="AccentBlue" Color="#4A5A8A"/>
+        <SolidColorBrush x:Key="Green" Color="#4CAF50"/>
+
+        <!-- Styles -->
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="20,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#4A5A8A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ActiveNavButton" TargetType="Button" BasedOn="{StaticResource NavButton}">
+            <Setter Property="Background" Value="#4A5A8A"/>
+        </Style>
+
+        <Style x:Key="PanelCard" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource LightBlue}"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+
+        <Style x:Key="InnerCard" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource LighterBlue}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource LighterBlue}"/>
+            <Setter Property="Foreground" Value="#2E3A59"/>
+            <!-- Increased font size -->
+            <Setter Property="FontSize" Value="16"/>
+            <!-- Increased padding -->
+            <Setter Property="Padding" Value="25,12"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        CornerRadius="8" BorderBrush="#B0C0E0" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GreenButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
+            <Setter Property="Background" Value="#E8F5E9"/>
+            <Setter Property="BorderBrush" Value="#4CAF50"/>
+        </Style>
+
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource LighterBlue}"/>
+            <Setter Property="BorderBrush" Value="#B0C0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="All"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F5F7FA"/>
+            <Setter Property="ColumnHeaderStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="#2E3A59"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Padding" Value="10,5"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                        <Setter Property="BorderBrush" Value="#D0D0D0"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="NavButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}" 
+                    CornerRadius="10"
+                    Padding="15,5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#6A78A1"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Background="{DynamicResource NavyBlue}" Padding="15,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Logo -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="50" Height="50">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="/Images/icpep.png" Stretch="UniformToFill"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </StackPanel>
+
+                <!-- Navigation -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" 
+                          HorizontalAlignment="Center">
+                    <ToggleButton x:Name="DashboardBtn" Style="{StaticResource NavButtonStyle}" Content="Dashboard" FontSize="15" FontWeight="Medium" Click="NavButton_Click" Checked="DashboardBtn_Checked"/>
+                    <ToggleButton x:Name="AdminBtn" Style="{StaticResource NavButtonStyle}" Content="Admin" FontSize="15" FontWeight="Medium" Click="NavButton_Click" Margin="10,0,0,0" Checked="AdminBtn_Checked"/>
+                    <ToggleButton x:Name="AboutBtn" Style="{StaticResource NavButtonStyle}" Content="About us" FontSize="15" FontWeight="Medium" Click="NavButton_Click" Margin="10,0,0,0" Checked="AboutBtn_Checked"/>
+                    <ToggleButton x:Name="ExitBtn" Style="{StaticResource NavButtonStyle}" Content="Exit" FontSize="15" FontWeight="Medium" Click="NavButton_Click" Margin="10,0,0,0" Checked="ExitBtn_Checked"/>
+
+                </StackPanel>
+
+                <!-- User Profile -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" 
+                          VerticalAlignment="Center">
+                    <TextBlock Text="BitSync" Foreground="White" FontSize="14" 
+                             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Ellipse Width="50" Height="50">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="/Images/bitsync.jpg" Stretch="UniformToFill"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Border x:Name="ContentBorder" 
+                    CornerRadius="0" Padding="0" Margin="0" Grid.RowSpan="2">
+                <ContentControl x:Name="ContentArea" Margin="0"/>
+            </Border>
+        </Grid>
+        
+    </Grid>
+</Window>
